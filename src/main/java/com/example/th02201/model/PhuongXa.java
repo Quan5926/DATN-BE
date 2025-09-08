@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Entity
 @Table(name = "phuong_xa")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhuongXa {
+public class PhuongXa  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

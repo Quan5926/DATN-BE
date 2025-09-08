@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 /**
  * Lớp Entity cho bảng 'quan_huyen'.
  * Đại diện cho quận/huyện.
@@ -16,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuanHuyen {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,4 +33,8 @@ public class QuanHuyen {
 
     @Column(name = "ma_huyen", length = 50)
     private String maHuyen;
+
+    // Mối quan hệ One-to-Many với PhuongXa
+    @OneToMany(mappedBy = "quanHuyen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PhuongXa> phuongXas;
 }
