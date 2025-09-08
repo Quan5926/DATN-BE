@@ -1,47 +1,49 @@
 package com.example.th02201.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "ma_giam_gia")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "phieuGiamGia", "khachHangDuocCap"})
 public class MaGiamGia {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private UUID id;
 
-    @Column(name = "ma_code")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_phieu_giam_gia", nullable = false)
+    @JsonIgnoreProperties({"maGiamGias"}) // nếu PhieuGiamGia có list<MaGiamGia>
+    private PhieuGiamGia phieuGiamGia;
+
+    @Column(name = "ma_code", nullable = false, unique = true)
     private String maCode;
 
-    @Column(name = "da_su_dung")
-    private Boolean daSuDung;
+    @Column(name = "da_su_dung", nullable = false)
+    private Boolean daSuDung = false;
+
+    @Column(name = "id_hoa_don_da_su_dung", unique = true)
+    private UUID idHoaDonDaSuDung;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_khach_hang_duoc_cap")
+    @JsonIgnoreProperties({"maGiamGias", "hoaDons"}) // tùy field trong KhachHang
+    private KhachHang khachHangDuocCap;
 
     @Column(name = "ngay_tao")
     private LocalDateTime ngayTao;
 
     @Column(name = "ngay_su_dung")
     private LocalDateTime ngaySuDung;
-
-    @ManyToOne
-    @JoinColumn(name = "id_phieu_giam_gia")
-    private PhieuGiamGia phieuGiamGia;
-
-    @ManyToOne
-    @JoinColumn(name = "id_khach_hang_duoc_cap")
-    private KhachHang khachHangDuocCap;
-
-    @ManyToOne
-    @JoinColumn(name = "id_hoa_don_da_su_dung")
-    private HoaDon hoaDonDaSuDung;
 }

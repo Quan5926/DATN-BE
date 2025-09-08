@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Getter
 @Setter
 public class ReferencedWarning {
@@ -26,6 +25,10 @@ public class ReferencedWarning {
     }
 
     public void addParam(final UUID param) {
+        params.add(param);
+    }
+
+    public void addParam(final Integer param) {
         params.add(param);
     }
 

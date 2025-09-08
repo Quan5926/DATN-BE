@@ -56,6 +56,7 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, Integer> {
     List<KhachHangRespone> Search(String ma);
 /////////////////////////////////////////////////////
 
-Optional<KhachHang> findBySoDienThoai(String soDienThoai);
+    Optional<KhachHang> findBySoDienThoai(String soDienThoai);
+    Optional<KhachHang> findByTenKhachHang(String tenKhachHang); // Hữu ích để tìm "Khách lẻ"
 
 }

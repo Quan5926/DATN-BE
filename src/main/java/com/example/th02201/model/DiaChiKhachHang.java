@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 /**
  * Lớp Entity cho bảng 'dia_chi_khach_hang'.
@@ -19,14 +18,11 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiaChiKhachHang {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_khach_hang", referencedColumnName = "id", nullable = false)
-    private KhachHang khachHang;
 
     @Column(name = "ten_nguoi_nhan", nullable = false, length = 100)
     private String tenNguoiNhan;
@@ -37,9 +33,6 @@ public class DiaChiKhachHang {
     @Column(name = "so_nha_ten_duong", nullable = false, length = 255)
     private String soNhaTenDuong;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_phuong_xa", referencedColumnName = "id", nullable = false)
-    private PhuongXa phuongXa;
 
     @Column(name = "ghi_chu", columnDefinition = "NVARCHAR(MAX)")
     private String ghiChu;
@@ -47,9 +40,31 @@ public class DiaChiKhachHang {
     @Column(name = "la_dia_chi_mac_dinh", nullable = false)
     private Boolean laDiaChiMacDinh = false;
 
-    @Column(name = "ngay_tao", nullable = false)
-    private LocalDateTime ngayTao = LocalDateTime.now();
+    @Column(name = "ngay_tao", nullable = false, updatable = false) // Bỏ columnDefinition "datetime2"
+    private LocalDateTime ngayTao;
 
-    @Column(name = "ngay_cap_nhat", nullable = false)
-    private LocalDateTime ngayCapNhat = LocalDateTime.now();
+    @Column(name = "ngay_cap_nhat", nullable = false) // Bỏ columnDefinition "datetime2"
+    private LocalDateTime ngayCapNhat;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_khach_hang", referencedColumnName = "id", nullable = false)
+    private KhachHang khachHang;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_phuong_xa", referencedColumnName = "id", nullable = false)
+    private PhuongXa phuongXa;
+
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.ngayTao = LocalDateTime.now();
+        this.ngayCapNhat = LocalDateTime.now();
+        if (this.laDiaChiMacDinh == null) {
+            this.laDiaChiMacDinh = false; // Giá trị mặc định theo DB (DEFAULT 0)
+        }
+    }
+
 }
